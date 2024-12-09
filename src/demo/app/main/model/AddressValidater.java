@@ -51,16 +51,15 @@ public interface AddressValidater extends AddressCheck{
 				System.out.println("修正");
 				usertable.set(index,new AcountRegist(usertable.get(index).getId(),usertable.get(index).getName(),usertable.get(index).getAge(),f.getDeclaredAnnotation(AddressRetouch.class).address()));
 			
-				try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/information","root","");)
-				{
-						
 
-						
-						String query = "UPDATE  POSTDATA SET ADDRESS = ?  WHERE ADDRESS = NULL  ;";
-						PreparedStatement ps = con.prepareStatement(query);
-				
+
+				try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/userinformation","root","");)
+				{
+								
+						String query = "UPDATE  POSTDATA SET ADDRESS = ?  WHERE ADDRESS IS NULL  ;";
+						PreparedStatement ps = con.prepareStatement(query);		
 						ps.setString(1,f.getDeclaredAnnotation(AddressRetouch.class).address());
-				
+							
 						ps.executeUpdate();
 				} catch (SQLException e) {
 					// TODO 自動生成された catch ブロック
@@ -92,8 +91,7 @@ public default void addresscheck(List<AcountRegist> usertable,int index)
 				AddressRetouch(usertable,i);
 				addresscheck(usertable,i);
 				throw new InputAddressMissmatchException("既定値を挿入しました");
-			
-
+		
 				}					
 			}		
 	}
